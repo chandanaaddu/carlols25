@@ -2,44 +2,242 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>TLAG Carols – 2025 Tracker</title>
-  https://fonts.googleapis.com
-  https://fonts.gstatic.com
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat0&family=Inter:wght@400;600;700&display=swap
-  styles.css
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>TLAG Carols – 2025 Levels</title>
+<style>
+  :root{
+    --bg:#0e1320; --text:#f7f7f7; --muted:#bfc4d6; --border:#2b2f48;
+    --tile:#1a2036; --tile2:#17233a; --green:#21a464; --gold:#f4c542; --gray:#7a7f91; --blue:#4ea3ff; --red:#d93636;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:radial-gradient(1200px 500px at 20% -20%,#14431d,transparent 40%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
+  .topbar{position:sticky;top:0;z-index:5;background:#121935cc;backdrop-filter:blur(6px);
+          border-bottom:1px solid var(--border);padding:.8rem 1rem;display:flex;gap:.8rem;align-items:center;justify-content:space-between}
+  .brand{font-weight:800;letter-spacing:.2px}
+  .controls{display:flex;gap:.5rem;align-items:center}
+  select,button{border:1px solid var(--border);border-radius:10px;padding:.45rem .7rem;background:#0f1528;color:#fff}
+  button.primary{background:linear-gradient(135deg,#2563eb,#1e40af);border:none}
+  .container{max-width:1100px;margin:1rem auto;padding:0 1rem}
+  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1rem}
+  .summary>div{background:#121935;border:1px solid var(--border);border-radius:12px;padding:.6rem .8rem}
+  .progress{display:flex;gap:.5rem;align-items:center;margin:.2rem 0}
+  .bar{flex:1;height:10px;background:#1a2136;border-radius:999px;overflow:hidden}
+  .fill{height:100%;background:linear-gradient(90deg,#21a464,#f4c542);width:0%}
+  .levels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.9rem}
+  .level{
+    background:linear-gradient(135deg,var(--tile),var(--tile2));
+    border:1px solid var(--border); border-radius:16px; padding:.9rem; position:relative;
+    box-shadow:0 2px 0 rgba(0,0,0,.2), inset 0 0 0 2px rgba(255,255,255,.03);
+    transition:transform .12s ease;
+  }
+  .level:hover{transform:translateY(-2px)}
+  .badge{position:absolute;top:.65rem;right:.65rem;font-size:.78rem;font-weight:700;color:#091118;
+         background:#fff;border-radius:999px;padding:.22rem .55rem}
+  .badge.completed{background:var(--green);color:#04180d}
+  .badge.upcoming{background:var(--gold);color:#151000}
+  .badge.skipped{background:var(--gray);color:#0e0f12}
+  .num{font-weight:900;font-size:1.35rem;color:#f4c542}
+  .family{font-weight:700;margin:.2rem 0 .35rem}
+  .time{color:var(--muted);font-size:.92rem}
+  .verse{margin-top:.3rem;color:#cfe1ff;font-size:.9rem}
+  .actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.6rem}
+  .btn{background:#18223c;color:#fff;border:1px solid var(--border);border-radius:999px;padding:.35rem .6rem;cursor:pointer}
+  .btn.done{background:#133322;border-color:#1f6c49}
+  .btn.upc{background:#2e260e;border-color:#6a4b00}
+  .btn.skip{background:#2b2d36;border-color:#4b4e61}
+  .maplink{display:inline-flex;align-items:center;gap:.35rem;color:#7cc3ff;text-decoration:underline;font-weight:700;margin-top:.4rem}
+  .footer{color:var(--muted);text-align:center;padding:1.2rem 0}
+  @media (max-width:760px){ .summary{grid-template-columns:1fr} }
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">🎄 TLAG Carols – 2025 Tracker</div>
-    <div class="controls">
-      <label for="dateSelect">Date</label>
-      <select id="dateSelect">
-        <option value="12/5/25">12/5/25</option>
-        <option value="12/6/25">12/6/25</option>
-        <option value="12/12/25">12/12/25</option>
-        <option value="12/13/25">12/13/25</option>
-      </select>
-      <button id="routeBtn" class="btn primary">Open tonight’s route</button>
+<header class="topbar">
+  <div class="brand">🎄 TLAG Carols – 2025 Levels</div>
+  <div class="controls">
+    <label for="dateSelect">Date</label>
+    <select id="dateSelect">
+      <option value="12/5/25">12/5/25</option>
+      <option value="12/6/25">12/6/25</option>
+      <option value="12/12/25">12/12/25</option>
+      <option value="12/13/25">12/13/25</option>
+    </select>
+    <button id="routeBtn" class="primary">Open tonight’s route</button>
+  </div>
+</header>
+
+<main class="container">
+  <section class="summary">
+    <div><strong>Local time (CST):</strong> <span id="clock">—</span></div>
+    <div><strong>Now:</strong> <span id="nowFamily">—</span></div>
+    <div>
+      <div class="progress"><strong>Progress:</strong> 
+        <div class="bar"><div id="fill" class="fill"></div></div>
+        <span id="progText">0/0</span>
+      </div>
+      <small class="muted">Mark tiles as Completed / Upcoming / Skip</small>
     </div>
-  </header>
+  </section>
 
-  <main class="container">
-    <section id="summary" class="summary">
-      <div><strong>Local time (CST):</strong> <span id="clock">—</span></div>
-      <div><strong>Now:</strong> <span id="nowFamily">—</span></div>
-      <div><strong>Next:</strong> <span id="nextFamily">—</span></div>
-    </section>
+  <section id="grid" class="levels-grid"></section>
+  <p style="color:#bfc4d6;margin-top:.6rem">
+    Tip: Each tile is a “level”. Click <em>Open in Google Maps</em> to navigate to that home.  
+    The route button builds a full‑night route with waypoints (no API key needed). 
+    <a href="https://developers.google.com/maps/documentation/urls/get-started" target="_blank" rel="noopener">Docs</a>. <!-- Maps URLs -->
+  </p>
+</main>
 
-    <section id="cards" class="cards"></section>
-    <p class="footnote">Tip: Click <em>Open in Google Maps</em> under a card to navigate to that home. The route button builds a full‑night route with waypoints (no API key needed). [1](https://developers.google.com/maps/documentation/urls/get-started)</p>
-  </main>
+<footer class="footer">
+  Auto‑updates from Google Sheets (GViz). Hosted on GitHub Pages.
+</footer>
 
-  <footer class="footer">
-    <p>Auto‑updates from Google Sheets (GViz). Hosted on GitHub Pages.</p>
-  </footer>
+<script>
+/* ===== CONFIG ===== */
+const TIMEZONE = "America/Chicago";                // Irving CST
+const SHEET_ID = "YOUR_SHEET_ID";                  // <-- paste your sheet id
+const GID = "0";                                   // <-- worksheet gid
+const DEFAULT_ORIGIN = "TLAG Church, Irving, TX";  // change or empty to start at first stop
+const STATUS_KEY = "tlag_levels_status_2025";      // localStorage (per device)
 
-  app.js</script>
+/* ===== UTILITIES ===== */
+const $ = sel => document.querySelector(sel);
+function tick(){ $("#clock").textContent = new Date().toLocaleString("en-US",{timeZone:TIMEZONE}); }
+function gvizUrl(dateStr){
+  const tq = encodeURIComponent(`select * where A='${dateStr}'`);
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&tq=${tq}`;
+}
+function parseGviz(txt){
+  // GViz returns JSON wrapped in JSONP. Strip wrapper and parse.  (Stack Overflow examples) 
+  // https://stackoverflow.com/questions/29202686/google-visualization-api-gviz-query-and-fetching-data-from-a-spreadsheet
+  const json = JSON.parse(txt.substring(txt.indexOf("{"), txt.lastIndexOf("}")+1));
+  const cols = json.table.cols.map(c => c.label || c.id);
+  return json.table.rows.map(r=>{
+    const o={}; r.c.forEach((cell,i)=>o[cols[i]] = cell ? (cell.f ?? cell.v ?? "") : ""); return o;
+  });
+}
+function parseTimeRange(rangeStr,dateStr){
+  const parts = (rangeStr||"").replace(/\s+/g," ").trim().split("-");
+  if(parts.length!==2) return null;
+  const rightHas = /am|pm/i.test(parts[1]);
+  const left = parts[0].trim() + (rightHas ? "" : " " + (parts[1].match(/am|pm/i)?.[0]||""));
+  const right = parts[1].trim();
+  const start = new Date(`${dateStr} ${left}`);
+  const end   = new Date(`${dateStr} ${right}`);
+  return {start,end};
+}
+function statusMap(){ try{ return JSON.parse(localStorage.getItem(STATUS_KEY)||"{}"); }catch{ return {}; } }
+function setStatus(date,sno,val){ const m=statusMap(); (m[date]??={})[sno]=val; localStorage.setItem(STATUS_KEY,JSON.stringify(m)); }
+function getStatus(date,sno){ return statusMap()[date]?.[sno] || null; }
+
+/* ===== RENDER LEVELS ===== */
+function setBadge(el,status){
+  el.textContent=""; el.className="badge";
+  if(status==="completed"){ el.classList.add("completed"); el.textContent="COMPLETED"; }
+  else if(status==="upcoming"){ el.classList.add("upcoming"); el.textContent="UPCOMING"; }
+  else if(status==="skipped"){ el.classList.add("skipped"); el.textContent="SKIPPED"; }
+}
+function renderGrid(items,dateStr){
+  const grid = $("#grid"); grid.innerHTML = "";
+  let completed=0;
+
+  items.forEach((it,idx)=>{
+    const sno = it["S.No"] || (idx+1);
+    const badge = document.createElement("div"); badge.className="badge";
+    setBadge(badge, getStatus(dateStr, sno));
+
+    if(getStatus(dateStr, sno)==="completed") completed++;
+
+    const div = document.createElement("article"); div.className="level"; div.dataset.sno=sno;
+    div.innerHTML = `
+      <div class="num">#${sno}</div>
+      <div class="family">${it["FamilyName"]||""}</div>
+      <div class="time">${it["TimeSlot"]||""}</div>
+      <div class="verse">📖 ${it["BibleVerse"]||""}</div>
+      ${it[📍 Open in Google Maps</a>
+      <div class="actions">
+        <button class="btn done">Completed</button>
+        <button class="btn upc">Upcoming</button>
+        <button class="btn skip">Skip</button>
+        <button class="btn">Clear</button>
+      </div>`;
+    div.appendChild(badge);
+
+    div.querySelector(".done").onclick = ()=>{ setStatus(dateStr,sno,"completed"); setBadge(badge,"completed"); updateProgress(items,dateStr); };
+    div.querySelector(".upc").onclick  = ()=>{ setStatus(dateStr,sno,"upcoming");  setBadge(badge,"upcoming");  updateProgress(items,dateStr); };
+    div.querySelector(".skip").onclick = ()=>{ setStatus(dateStr,sno,"skipped");   setBadge(badge,"skipped");   updateProgress(items,dateStr); };
+    div.querySelector(".actions .btn:last-child").onclick = ()=>{ setStatus(dateStr,sno,null); setBadge(badge,null); updateProgress(items,dateStr); };
+
+    grid.appendChild(div);
+  });
+
+  updateProgress(items,dateStr);
+}
+function updateProgress(items,dateStr){
+  const total = items.length;
+  const done  = items.filter((it,idx)=> (getStatus(dateStr, it["S.No"] || (idx+1)))==="completed").length;
+  $("#progText").textContent = `${done}/${total}`;
+  $("#fill").style.width = total ? `${Math.round((done/total)*100)}%` : "0%";
+}
+
+/* ===== SUMMARY (Now/Next) ===== */
+function renderSummary(items,dateStr){
+  const nowDate = new Date(new Date().toLocaleString("en-US",{timeZone:TIMEZONE}));
+  let currentIdx=-1,nextIdx=-1;
+  items.forEach((it,idx)=>{
+    const rng = parseTimeRange(it["TimeSlot"],dateStr);
+    if(!rng) return;
+    if(nowDate>=rng.start && nowDate<=rng.end) currentIdx=idx;
+    else if(nowDate<rng.start && nextIdx===-1) nextIdx=idx;
+  });
+  $("#nowFamily").textContent  = currentIdx>=0 ? items[currentIdx]["FamilyName"] : "—";
+  $("#nextFamily").textContent = nextIdx>=0 ? items[nextIdx]["FamilyName"]      : "—";
+}
+
+/* ===== ROUTE ===== */
+function attachRoute(items){
+  $("#routeBtn").onclick = ()=>{
+    // Google Maps URLs (no API key) — directions with waypoints. Docs: 
+    // https://developers.google.com/maps/documentation/urls/get-started
+    const addrs = items.map(it=> (it["Address"]||"").trim()).filter(Boolean);
+    if(addrs.length<2){ alert("Need at least 2 addresses to build a route."); return; }
+    const origin = encodeURIComponent(DEFAULT_ORIGIN || addrs[0]);
+    const dest   = encodeURIComponent(addrs[addrs.length-1]);
+    const way    = addrs.slice(DEFAULT_ORIGIN?0:1, addrs.length-1).map(encodeURIComponent).join("|");
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}`
+               + (way?`&waypoints=${way}`:"") + `&travelmode=driving`;
+    window.open(url,"_blank");
+  };
+}
+
+/* ===== LOAD DATA ===== */
+async function loadForDate(dateStr){
+  tick();
+  try{
+    const res = await fetch(gvizUrl(dateStr));
+    const txt = await res.text();
+    // When sheet is public‑viewable & IDs correct, GViz returns JSONP we parse:
+    const rows = parseGviz(txt);  
+    if(!rows.length){ throw new Error("No rows for the selected date. Check Date formatting in column A."); }
+    renderGrid(rows,dateStr); renderSummary(rows,dateStr); attachRoute(rows);
+  }catch(err){
+    console.warn("GViz failed, showing sample grid instead:", err);
+    // SAMPLE fallback so you can verify the layout before the sheet is public
+    const sample = [
+      {Date:dateStr,"S.No":1,FamilyName:"Jasper Uncle", Address:"1750 FM423, Frisco, TX 75033", TimeSlot:"6:00 - 6:20 PM", BibleVerse:"Isaiah 9:6", GMapLink:"https://maps.app.goo.gl/X"},
+      {Date:dateStr,"S.No":2,FamilyName:"Vinod", Address:"1690 FM 423, #2209 Frisco, TX 75033", TimeSlot:"6:30 - 6:50 PM", BibleVerse:"Luke 2:10–11", GMapLink:"https://maps.app.goo.gl/Y"},
+      {Date:dateStr,"S.No":3,FamilyName:"Suresh", Address:"1690 FM 423 #2203, Frisco, TX 75033", TimeSlot:"7:00 - 7:20 PM", BibleVerse:"John 1:14", GMapLink:"https://maps.app.goo.gl/Z"}
+    ];
+    renderGrid(sample,dateStr); renderSummary(sample,dateStr); attachRoute(sample);
+    // To make GViz work: Sheet must be “Anyone with the link: Viewer” (or Published).
+    // Reference: https://stackoverflow.com/questions/70902197/accessing-a-public-google-sheets-data-directly-from-client-side-javascript
+  }
+}
+
+/* ===== INIT ===== */
+const dateSelect = $("#dateSelect");
+dateSelect.addEventListener("change",()=> loadForDate(dateSelect.value));
+tick(); setInterval(tick,1000);
+loadForDate(dateSelect.value);
+</script>
 </body>
 </html>
