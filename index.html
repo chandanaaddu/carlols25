@@ -2,242 +2,273 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>TLAG Carols – 2025 Levels</title>
-<style>
-  :root{
-    --bg:#0e1320; --text:#f7f7f7; --muted:#bfc4d6; --border:#2b2f48;
-    --tile:#1a2036; --tile2:#17233a; --green:#21a464; --gold:#f4c542; --gray:#7a7f91; --blue:#4ea3ff; --red:#d93636;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;background:radial-gradient(1200px 500px at 20% -20%,#14431d,transparent 40%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
-  .topbar{position:sticky;top:0;z-index:5;background:#121935cc;backdrop-filter:blur(6px);
-          border-bottom:1px solid var(--border);padding:.8rem 1rem;display:flex;gap:.8rem;align-items:center;justify-content:space-between}
-  .brand{font-weight:800;letter-spacing:.2px}
-  .controls{display:flex;gap:.5rem;align-items:center}
-  select,button{border:1px solid var(--border);border-radius:10px;padding:.45rem .7rem;background:#0f1528;color:#fff}
-  button.primary{background:linear-gradient(135deg,#2563eb,#1e40af);border:none}
-  .container{max-width:1100px;margin:1rem auto;padding:0 1rem}
-  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1rem}
-  .summary>div{background:#121935;border:1px solid var(--border);border-radius:12px;padding:.6rem .8rem}
-  .progress{display:flex;gap:.5rem;align-items:center;margin:.2rem 0}
-  .bar{flex:1;height:10px;background:#1a2136;border-radius:999px;overflow:hidden}
-  .fill{height:100%;background:linear-gradient(90deg,#21a464,#f4c542);width:0%}
-  .levels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.9rem}
-  .level{
-    background:linear-gradient(135deg,var(--tile),var(--tile2));
-    border:1px solid var(--border); border-radius:16px; padding:.9rem; position:relative;
-    box-shadow:0 2px 0 rgba(0,0,0,.2), inset 0 0 0 2px rgba(255,255,255,.03);
-    transition:transform .12s ease;
-  }
-  .level:hover{transform:translateY(-2px)}
-  .badge{position:absolute;top:.65rem;right:.65rem;font-size:.78rem;font-weight:700;color:#091118;
-         background:#fff;border-radius:999px;padding:.22rem .55rem}
-  .badge.completed{background:var(--green);color:#04180d}
-  .badge.upcoming{background:var(--gold);color:#151000}
-  .badge.skipped{background:var(--gray);color:#0e0f12}
-  .num{font-weight:900;font-size:1.35rem;color:#f4c542}
-  .family{font-weight:700;margin:.2rem 0 .35rem}
-  .time{color:var(--muted);font-size:.92rem}
-  .verse{margin-top:.3rem;color:#cfe1ff;font-size:.9rem}
-  .actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.6rem}
-  .btn{background:#18223c;color:#fff;border:1px solid var(--border);border-radius:999px;padding:.35rem .6rem;cursor:pointer}
-  .btn.done{background:#133322;border-color:#1f6c49}
-  .btn.upc{background:#2e260e;border-color:#6a4b00}
-  .btn.skip{background:#2b2d36;border-color:#4b4e61}
-  .maplink{display:inline-flex;align-items:center;gap:.35rem;color:#7cc3ff;text-decoration:underline;font-weight:700;margin-top:.4rem}
-  .footer{color:var(--muted);text-align:center;padding:1.2rem 0}
-  @media (max-width:760px){ .summary{grid-template-columns:1fr} }
-</style>
-</head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TLAG Carols Tracker – 2025</title>
+  <meta name="description" content="Live tracking for TLAG Christmas Carols with maps, verses, and statuses." />
+  <link rel="preconnect" href="  <link rel="preconnect" href <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Great+Vibes&displayle>
+    :root{
+      --bg: #0b1a22;
+      --card: #102733;
+      --accent: #e63946; --accent2: #2a9d8f; --gold: #ffd166;
+      --text: #f1faee; --muted: #a8dadc;
+      --live: #f94144; --upcoming: #06d6a0; --completed: #457b9d; --skipped: #6c757d;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Montserrat,system-ui,sans-serif}
+    .wrap{width:min(1100px,92%);margin:0 auto}
+    .hero{
+      background: radial-gradient(1200px 400px at 50% -60%, #174252, transparent 60%),
+                  url('https://images.unsplash.com/photo-1482517967863-00e15c9b44be?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+      padding:3.5rem 0 2rem; position:relative; border-bottom:3px solid rgba(255,255,255,.08);
+    }
+    .hero h1{font-family:"Great Vibes",cursive;font-size:clamp(2.4rem,6vw,3.8rem);margin:0 0 .25rem;color:var(--gold);text-shadow:0 2px 10px rgba(0,0,0,.4)}
+    .subtitle{margin:.25rem 0 1rem;color:var(--muted)}
+    .controls{display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0 1rem}
+    .controls input,.controls .btn{padding:.7rem .85rem;background:rgba(0,0,0,.25);color:var(--text);
+      border:1px solid rgba(255,255,255,.15);border-radius:.6rem;outline:none}
+    .controls input::placeholder{color:#cbd5e1}
+    .btn{cursor:pointer} .btn.ghost{background:transparent;border-color:rgba(255,255,255,.25)}
+    .legend{display:flex;gap:.5rem;flex-wrap:wrap}
+    .badge{display:inline-flex;align-items:center;gap:.4rem;padding:.28rem .55rem;border-radius:999px;font-size:.85rem;font-weight:700;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)}
+    .badge.upcoming{color:var(--upcoming)} .badge.live{color:var(--live)} .badge.completed{color:var(--completed)} .badge.skipped{color:var(--skipped)}
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin:1.2rem 0 2.2rem}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03)),var(--card);
+      border:1px solid rgba(255,255,255,.12);border-radius:1rem;padding:1rem;position:relative;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+    .top{display:flex;align-items:flex-start;gap:.75rem}
+    .tree{width:38px;height:38px;background:radial-gradient(circle at 50% 30%, #2ca58d, #2a9d8f);
+      border-radius:8px;flex:0 0 auto;display:grid;place-items:center;color:#113a4a;font-weight:900;border:1px solid rgba(255,255,255,.2)}
+    .title{display:flex;flex-direction:column;gap:.2rem}
+    .title h3{margin:0;font-size:1.05rem;color:#f8fafc}
+    .title .date{font-size:.85rem;color:var(--muted)}
+    .kv{margin:.7rem 0;display:grid;gap:.35rem}
+    .row{display:flex;gap:.5rem;align-items:flex-start}
+    .label{width:92px;color:#cbd5e1;font-size:.85rem}
+    .val{flex:1;color:#e2e8f0}
+    .pills{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}
+    .pill{padding:.28rem .55rem;border-radius:999px;font-size:.8rem;border:1px solid rgba(255,255,255,.15)}
+    .status-upcoming{background:rgba(6,214,160,.12);color:var(--upcoming)}
+    .status-live{background:rgba(249,65,68,.12);color:var(--live)}
+    .status-completed{background:rgba(69,123,157,.12);color:var(--completed)}
+    .status-skipped{background:rgba(108,117,125,.12);color:var(--skipped)}
+    .actions{display:flex;gap:.5rem;margin-top:.8rem}
+    .actions .btn{background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.18);border-radius:.6rem;padding:.55rem .7rem;font-weight:600}
+    .btn.primary{background:linear-gradient(180deg,#e6394650,#e6394610);border-color:#e6394655;color:#fff}
+    .btn.secondary{background:linear-gradient(180deg,#2a9d8f50,#2a9d8f10);border-color:#2a9d8f55;color:#fff}
+    .btn.gold{background:linear-gradient(180deg,#ffd16666,#ffd16622);border-color:#ffd16688;color:#1b1b1b}
+    .map{margin-top:.8rem;border:0;width:100%;height:210px;border-radius:.6rem;filter:saturate(1.1) contrast(1.02);border:1px solid rgba(255,255,255,.12)}
+    .snow::before,.snow::after{content:"";position:fixed;inset:0;pointer-events:none;
+      background-image:radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.9), rgba(255,255,255,0) 40%),
+                       radial-gradient(3px 3px at 100px 80px, rgba(255,255,255,.8), rgba(255,255,255,0) 40%),
+                       radial-gradient(1.5px 1.5px at 200px 150px, rgba(255,255,255,.9), rgba(255,255,255,0) 40%);
+      animation:snow 10s linear infinite;opacity:.35}
+    .snow::after{animation-duration:16s;opacity:.25}
+    @keyframes snow{from{background-position:0 0,0 0,0 0}to{background-position:0 600px,0 800px,0 1000px}}
+    .empty{text-align:center;color:#cbd5e1}
+    .hidden{display:none}
+    .footer{color:#a8dadc;border-top:1px solid rgba(255,255,255,.1);padding:1rem 0 2rem}
+    .toolbar{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem}
+  </style>
+  <!-- html2canvas for "Save as Image" -->
+  <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvashead>
 <body>
-<header class="topbar">
-  <div class="brand">🎄 TLAG Carols – 2025 Levels</div>
-  <div class="controls">
-    <label for="dateSelect">Date</label>
-    <select id="dateSelect">
-      <option value="12/5/25">12/5/25</option>
-      <option value="12/6/25">12/6/25</option>
-      <option value="12/12/25">12/12/25</option>
-      <option value="12/13/25">12/13/25</option>
-    </select>
-    <button id="routeBtn" class="primary">Open tonight’s route</button>
-  </div>
-</header>
-
-<main class="container">
-  <section class="summary">
-    <div><strong>Local time (CST):</strong> <span id="clock">—</span></div>
-    <div><strong>Now:</strong> <span id="nowFamily">—</span></div>
-    <div>
-      <div class="progress"><strong>Progress:</strong> 
-        <div class="bar"><div id="fill" class="fill"></div></div>
-        <span id="progText">0/0</span>
+  <div class="snow"></div>
+  <header class="hero">
+    <div class="wrap">
+      <h1>TLAG – Carols 2025</h1>
+      <p class="subtitle">“Glory to God in the highest, and on earth peace…” – Luke 2:14</p>
+      <div class="controls">
+        <input id="search" type="search" placeholder="Search family, address, verse..." />
+        <input id="dateFilter" type="date" />
+        <button id="clearFilters" class="btn ghost">Clear</button>
       </div>
-      <small class="muted">Mark tiles as Completed / Upcoming / Skip</small>
+      <div class="toolbar">
+        <button id="saveFiltered" class="btn gold">Save filtered list as image</button>
+      </div>
+      <div class="legend">
+        <span class="badge upcoming">Upcoming</span>
+        <span class="badge live">Live</span>
+        <span class="badge completed">Completed</span>
+        <span class="badge skipped">Skipped</span>
+      </div>
     </div>
-  </section>
+  </header>
 
-  <section id="grid" class="levels-grid"></section>
-  <p style="color:#bfc4d6;margin-top:.6rem">
-    Tip: Each tile is a “level”. Click <em>Open in Google Maps</em> to navigate to that home.  
-    The route button builds a full‑night route with waypoints (no API key needed). 
-    <a href="https://developers.google.com/maps/documentation/urls/get-started" target="_blank" rel="noopener">Docs</a>. <!-- Maps URLs -->
-  </p>
-</main>
+  <main class="wrap">
+    <section id="cards" class="cards"></section>
+    <p id="emptyState" class="empty hidden">No matches found. Try clearing filters.</p>
+  </main>
 
-<footer class="footer">
-  Auto‑updates from Google Sheets (GViz). Hosted on GitHub Pages.
-</footer>
+  <footer class="wrap footer">
+    <p>Made with ♥ for Christmas — TLAG Carols 2025</p>
+    <p><small>Last updated: <span id="lastUpdated">—</span></small></p>
+  </footer>
 
-<script>
-/* ===== CONFIG ===== */
-const TIMEZONE = "America/Chicago";                // Irving CST
-const SHEET_ID = "YOUR_SHEET_ID";                  // <-- paste your sheet id
-const GID = "0";                                   // <-- worksheet gid
-const DEFAULT_ORIGIN = "TLAG Church, Irving, TX";  // change or empty to start at first stop
-const STATUS_KEY = "tlag_levels_status_2025";      // localStorage (per device)
-
-/* ===== UTILITIES ===== */
-const $ = sel => document.querySelector(sel);
-function tick(){ $("#clock").textContent = new Date().toLocaleString("en-US",{timeZone:TIMEZONE}); }
-function gvizUrl(dateStr){
-  const tq = encodeURIComponent(`select * where A='${dateStr}'`);
-  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&tq=${tq}`;
-}
-function parseGviz(txt){
-  // GViz returns JSON wrapped in JSONP. Strip wrapper and parse.  (Stack Overflow examples) 
-  // https://stackoverflow.com/questions/29202686/google-visualization-api-gviz-query-and-fetching-data-from-a-spreadsheet
-  const json = JSON.parse(txt.substring(txt.indexOf("{"), txt.lastIndexOf("}")+1));
-  const cols = json.table.cols.map(c => c.label || c.id);
-  return json.table.rows.map(r=>{
-    const o={}; r.c.forEach((cell,i)=>o[cols[i]] = cell ? (cell.f ?? cell.v ?? "") : ""); return o;
-  });
-}
-function parseTimeRange(rangeStr,dateStr){
-  const parts = (rangeStr||"").replace(/\s+/g," ").trim().split("-");
-  if(parts.length!==2) return null;
-  const rightHas = /am|pm/i.test(parts[1]);
-  const left = parts[0].trim() + (rightHas ? "" : " " + (parts[1].match(/am|pm/i)?.[0]||""));
-  const right = parts[1].trim();
-  const start = new Date(`${dateStr} ${left}`);
-  const end   = new Date(`${dateStr} ${right}`);
-  return {start,end};
-}
-function statusMap(){ try{ return JSON.parse(localStorage.getItem(STATUS_KEY)||"{}"); }catch{ return {}; } }
-function setStatus(date,sno,val){ const m=statusMap(); (m[date]??={})[sno]=val; localStorage.setItem(STATUS_KEY,JSON.stringify(m)); }
-function getStatus(date,sno){ return statusMap()[date]?.[sno] || null; }
-
-/* ===== RENDER LEVELS ===== */
-function setBadge(el,status){
-  el.textContent=""; el.className="badge";
-  if(status==="completed"){ el.classList.add("completed"); el.textContent="COMPLETED"; }
-  else if(status==="upcoming"){ el.classList.add("upcoming"); el.textContent="UPCOMING"; }
-  else if(status==="skipped"){ el.classList.add("skipped"); el.textContent="SKIPPED"; }
-}
-function renderGrid(items,dateStr){
-  const grid = $("#grid"); grid.innerHTML = "";
-  let completed=0;
-
-  items.forEach((it,idx)=>{
-    const sno = it["S.No"] || (idx+1);
-    const badge = document.createElement("div"); badge.className="badge";
-    setBadge(badge, getStatus(dateStr, sno));
-
-    if(getStatus(dateStr, sno)==="completed") completed++;
-
-    const div = document.createElement("article"); div.className="level"; div.dataset.sno=sno;
-    div.innerHTML = `
-      <div class="num">#${sno}</div>
-      <div class="family">${it["FamilyName"]||""}</div>
-      <div class="time">${it["TimeSlot"]||""}</div>
-      <div class="verse">📖 ${it["BibleVerse"]||""}</div>
-      ${it[📍 Open in Google Maps</a>
-      <div class="actions">
-        <button class="btn done">Completed</button>
-        <button class="btn upc">Upcoming</button>
-        <button class="btn skip">Skip</button>
-        <button class="btn">Clear</button>
-      </div>`;
-    div.appendChild(badge);
-
-    div.querySelector(".done").onclick = ()=>{ setStatus(dateStr,sno,"completed"); setBadge(badge,"completed"); updateProgress(items,dateStr); };
-    div.querySelector(".upc").onclick  = ()=>{ setStatus(dateStr,sno,"upcoming");  setBadge(badge,"upcoming");  updateProgress(items,dateStr); };
-    div.querySelector(".skip").onclick = ()=>{ setStatus(dateStr,sno,"skipped");   setBadge(badge,"skipped");   updateProgress(items,dateStr); };
-    div.querySelector(".actions .btn:last-child").onclick = ()=>{ setStatus(dateStr,sno,null); setBadge(badge,null); updateProgress(items,dateStr); };
-
-    grid.appendChild(div);
-  });
-
-  updateProgress(items,dateStr);
-}
-function updateProgress(items,dateStr){
-  const total = items.length;
-  const done  = items.filter((it,idx)=> (getStatus(dateStr, it["S.No"] || (idx+1)))==="completed").length;
-  $("#progText").textContent = `${done}/${total}`;
-  $("#fill").style.width = total ? `${Math.round((done/total)*100)}%` : "0%";
-}
-
-/* ===== SUMMARY (Now/Next) ===== */
-function renderSummary(items,dateStr){
-  const nowDate = new Date(new Date().toLocaleString("en-US",{timeZone:TIMEZONE}));
-  let currentIdx=-1,nextIdx=-1;
-  items.forEach((it,idx)=>{
-    const rng = parseTimeRange(it["TimeSlot"],dateStr);
-    if(!rng) return;
-    if(nowDate>=rng.start && nowDate<=rng.end) currentIdx=idx;
-    else if(nowDate<rng.start && nextIdx===-1) nextIdx=idx;
-  });
-  $("#nowFamily").textContent  = currentIdx>=0 ? items[currentIdx]["FamilyName"] : "—";
-  $("#nextFamily").textContent = nextIdx>=0 ? items[nextIdx]["FamilyName"]      : "—";
-}
-
-/* ===== ROUTE ===== */
-function attachRoute(items){
-  $("#routeBtn").onclick = ()=>{
-    // Google Maps URLs (no API key) — directions with waypoints. Docs: 
-    // https://developers.google.com/maps/documentation/urls/get-started
-    const addrs = items.map(it=> (it["Address"]||"").trim()).filter(Boolean);
-    if(addrs.length<2){ alert("Need at least 2 addresses to build a route."); return; }
-    const origin = encodeURIComponent(DEFAULT_ORIGIN || addrs[0]);
-    const dest   = encodeURIComponent(addrs[addrs.length-1]);
-    const way    = addrs.slice(DEFAULT_ORIGIN?0:1, addrs.length-1).map(encodeURIComponent).join("|");
-    const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}`
-               + (way?`&waypoints=${way}`:"") + `&travelmode=driving`;
-    window.open(url,"_blank");
-  };
-}
-
-/* ===== LOAD DATA ===== */
-async function loadForDate(dateStr){
-  tick();
-  try{
-    const res = await fetch(gvizUrl(dateStr));
-    const txt = await res.text();
-    // When sheet is public‑viewable & IDs correct, GViz returns JSONP we parse:
-    const rows = parseGviz(txt);  
-    if(!rows.length){ throw new Error("No rows for the selected date. Check Date formatting in column A."); }
-    renderGrid(rows,dateStr); renderSummary(rows,dateStr); attachRoute(rows);
-  }catch(err){
-    console.warn("GViz failed, showing sample grid instead:", err);
-    // SAMPLE fallback so you can verify the layout before the sheet is public
-    const sample = [
-      {Date:dateStr,"S.No":1,FamilyName:"Jasper Uncle", Address:"1750 FM423, Frisco, TX 75033", TimeSlot:"6:00 - 6:20 PM", BibleVerse:"Isaiah 9:6", GMapLink:"https://maps.app.goo.gl/X"},
-      {Date:dateStr,"S.No":2,FamilyName:"Vinod", Address:"1690 FM 423, #2209 Frisco, TX 75033", TimeSlot:"6:30 - 6:50 PM", BibleVerse:"Luke 2:10–11", GMapLink:"https://maps.app.goo.gl/Y"},
-      {Date:dateStr,"S.No":3,FamilyName:"Suresh", Address:"1690 FM 423 #2203, Frisco, TX 75033", TimeSlot:"7:00 - 7:20 PM", BibleVerse:"John 1:14", GMapLink:"https://maps.app.goo.gl/Z"}
+  <script>
+    /* ====== Inline data: EDIT THIS BLOCK ======
+       - date: YYYY-MM-DD (local)
+       - start/end: HH:MM (24h)
+       - status: "" or "skipped" to force skipped
+       - verseText optional
+    */
+    const SCHEDULE = [
+      { date:"2025-12-05", family:"Jasper Uncle", address:"1750 FM423, Frisco, TX 75033",
+        start:"18:00", end:"18:20", verseRef:"Isaiah 9:6", verseText:"For unto us a child is born...", status:"" },
+      { date:"2025-12-05", family:"Vinod", address:"1690 FM 423 #2209, Frisco, TX 75033",
+        start:"18:30", end:"18:50", verseRef:"Luke 2:10–11", verseText:"", status:"" },
+      { date:"2025-12-05", family:"Suresh", address:"1690 FM 423 #12203, Frisco, TX 75033",
+        start:"19:00", end:"19:20", verseRef:"John 1:14", verseText:"", status:"" },
+      { date:"2025-12-06", family:"Sam Vijay", address:"Apt 1201, 8626 Hickory St, Frisco, TX 75034",
+        start:"10:00", end:"10:20", verseRef:"Titus 3:4-6", verseText:"", status:"" },
+      { date:"2025-12-12", family:"Mary Buela", address:"1669 Willow Dr, Prosper, TX 75078",
+        start:"18:00", end:"18:20", verseRef:"Romans 15:13", verseText:"", status:"skipped" },
+      { date:"2025-12-13", family:"Vineel", address:"532 Sanhalie Dr, Frisco, TX 75033",
+        start:"09:00", end:"09:20", verseRef:"Matthew 1:23", verseText:"", status:"" }
+      // ⬆️ Add more entries here…
     ];
-    renderGrid(sample,dateStr); renderSummary(sample,dateStr); attachRoute(sample);
-    // To make GViz work: Sheet must be “Anyone with the link: Viewer” (or Published).
-    // Reference: https://stackoverflow.com/questions/70902197/accessing-a-public-google-sheets-data-directly-from-client-side-javascript
-  }
-}
 
-/* ===== INIT ===== */
-const dateSelect = $("#dateSelect");
-dateSelect.addEventListener("change",()=> loadForDate(dateSelect.value));
-tick(); setInterval(tick,1000);
-loadForDate(dateSelect.value);
-</script>
+    /* ===== Helpers ===== */
+    const $ = (s, r=document) => r.querySelector(s);
+    const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+    const pad = n => String(n).padStart(2,"0");
+    const fmt12 = hm => {
+      if(!hm) return "";
+      const [h,m] = hm.split(":").map(Number);
+      const d = new Date(); d.setHours(h, m||0, 0, 0);
+      return d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+    };
+    const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+    const slug = s => s.toLowerCase().replace(/\s+/g,"-").replace(/[^\w-]/g,"");
+
+    function computeStatus(item, now=new Date()){
+      if((item.status||"").toLowerCase()==="skipped") return "skipped";
+      const start = new Date(`${item.date}T${item.start||"00:00"}:00`);
+      const end   = new Date(`${item.date}T${item.end||"23:59"}:59`);
+      if(now < start) return "upcoming";
+      if(now >= start && now <= end) return "live";
+      return "completed";
+    }
+    const mapsLink = address => `https://www.google.com/maps?q=${encodeURIComponent(address)}`;
+    const mapsEmbed = address => `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+
+    /* ===== Render ===== */
+    let DATA = [];
+
+    function render(list){
+      const cards = $("#cards");
+      cards.innerHTML = "";
+      if(!list.length){ $("#emptyState").classList.remove("hidden"); return; }
+      $("#emptyState").classList.add("hidden");
+
+      const byDate = list.reduce((acc,it)=>{ (acc[it.date] ||= []).push(it); return acc; }, {});
+      const dates = Object.keys(byDate).sort();
+
+      dates.forEach(date=>{
+        byDate[date].sort((a,b)=> (a.start||"").localeCompare(b.start||""));
+        byDate[date].forEach(item=>{
+          const status = computeStatus(item);
+          const id = `card-${slug(item.family)}-${item.date}`;
+          const el = document.createElement("article");
+          el.className="card"; el.id=id;
+          el.innerHTML = `
+            <div class="top">
+              <div class="tree">🎄</div>
+              <div class="title">
+                <h3>${item.family}</h3>
+                <div class="date">${new Date(item.date).toLocaleDateString([], {weekday:"short", month:"short", day:"numeric", year:"numeric"})}</div>
+              </div>
+            </div>
+
+            <div class="kv">
+              <div class="row"><div class="label">Time</div><div class="val">${fmt12(item.start)} – ${fmt12(item.end)}</div></div>
+              <div class="row"><div class="label">Address</div><div class="val">${item.address}</div></div>
+              <div class="row"><div class="label">Verse</div><div class="val"><strong>${item.verseRef||""}</strong>${item.verseText?` — ${item.verseText}`:""}</div></div>
+            </div>
+
+            <div class="pills">
+              <span class="pill status-${status}">${status.toUpperCase()}</span>
+            </div>
+
+            <div class="actions">
+              <a class="btn primary" href="${mapsLink(item.address           <button class="btn secondary" data-save="${id}">Save as Image</button>
+            </div>
+
+            <iframe class="map" loading="lazy" src        `;
+          cards.appendChild(el);
+        });
+      });
+
+      // per-card image save
+      $$("button[data-save]").forEach(btn=>{
+        btn.addEventListener("click", async ()=>{
+          const id = btn.getAttribute("data-save");
+          const node = document.getElementById(id);
+          // hide iframe while capturing (iframes cannot be painted due to browser security)
+          const map = node.querySelector(".map");
+          map.style.visibility = "hidden";
+          try{
+            const canvas = await html2canvas(node, {backgroundColor:"#0b1a22", scale:2});
+            const a = document.createElement("a");
+            a.href = canvas.toDataURL("image/png");
+            a.download = `${id}.png`;
+            a.click();
+          } finally {
+            map.style.visibility = "visible";
+          }
+        });
+      });
+    }
+
+    function applyFilters(){
+      const q = ($("#search").value||"").toLowerCase().trim();
+      const d = $("#dateFilter").value||"";
+      const out = DATA.filter(it=>{
+        const hitQ = !q || [it.family,it.address,it.verseRef,it.verseText].join(" ").toLowerCase().includes(q);
+        const hitD = !d || it.date===d;
+        return hitQ && hitD;
+      });
+      render(out);
+    }
+
+    function init(){
+      // normalize
+      DATA = SCHEDULE.map(x=>({
+        ...x,
+        date:x.date, start:x.start||"", end:x.end||"",
+        family:x.family||"", address:x.address||"",
+        verseRef:x.verseRef||"", verseText:x.verseText||"",
+        status:(x.status||"").toLowerCase()
+      }));
+
+      const hasToday = DATA.some(d=>d.date===todayISO());
+      if(hasToday) $("#dateFilter").value = todayISO();
+
+      $("#lastUpdated").textContent = new Date().toLocaleString();
+
+      render(DATA);
+      $("#search").addEventListener("input", applyFilters);
+      $("#dateFilter").addEventListener("change", applyFilters);
+      $("#clearFilters").addEventListener("click", ()=>{ $("#search").value=""; $("#dateFilter").value=""; applyFilters(); });
+
+      // Save filtered list as one image
+      $("#saveFiltered").addEventListener("click", async ()=>{
+        const container = $("#cards");
+        // hide all iframes for capture
+        const iframes = $$(".map", container);
+        iframes.forEach(i=>i.style.visibility="hidden");
+        try{
+          const canvas = await html2canvas(container, {backgroundColor:"#0b1a22", scale:2});
+          const a = document.createElement("a");
+          a.href = canvas.toDataURL("image/png");
+          a.download = `carols-${$("#dateFilter").value||"all"}.png`;
+          a.click();
+        } finally {
+          iframes.forEach(i=>i.style.visibility="visible");
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
 </body>
 </html>
