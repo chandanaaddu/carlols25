@@ -1,0 +1,66 @@
+
+:root{
+  --bg:#eef6ff;
+  --card:#ffffff;
+  --text:#0f1b2e;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --pill-green:#1f8a3b;
+  --pill-gold:#f59e0b;
+  --pill-gray:#6b7280;
+  --btn:#2563eb;
+  --btn-hover:#1e40af;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif}
+
+.topbar{
+  position:sticky;top:0;z-index:10;
+  display:flex;justify-content:space-between;align-items:center;gap:.8rem;
+  padding:.8rem 1rem;background:#f0f9ff;border-bottom:1px solid var(--border)
+}
+.brand{font-family:Montserrat,Inter,sans-serif;font-weight:700}
+.controls{display:flex;align-items:center;gap:.5rem}
+label{font-weight:600}
+select{border:1px solid var(--border);border-radius:8px;padding:.35rem .5rem;background:#fff}
+
+.btn{border:none;border-radius:8px;padding:.5rem .8rem;cursor:pointer;font-weight:700}
+.btn.primary{background:var(--btn);color:#fff}
+.btn.primary:hover{background:var(--btn-hover)}
+
+.container{max-width:920px;margin:1rem auto;padding:0 1rem}
+.summary{
+  display:grid;grid-template-columns: repeat(3,1fr); gap:.6rem;margin-bottom:.6rem
+}
+.summary>div{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:.6rem .8rem}
+
+.cards{display:flex;flex-direction:column;gap:1rem}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;
+  box-shadow:0 1px 0 rgba(16,24,40,.03)
+}
+.card .row1{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
+.card .title{font-weight:700;font-size:1.05rem}
+.pill{
+  font-size:.78rem;font-weight:700;color:#fff;border-radius:999px;padding:.25rem .6rem
+}
+.pill.completed{background:var(--pill-green)}
+.pill.upcoming{background:var(--pill-gold)}
+.pill.skipped{background:var(--pill-gray)}
+
+.meta{margin:.5rem 0;color:var(--muted);line-height:1.45}
+.meta div{margin:.15rem 0}
+.actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
+.actions .btn{background:#f3f4f6}
+.actions .btn:hover{background:#e5e7eb}
+.actions .btn.done{background:#dcfce7}
+.actions .btn.upc{background:#fff7ed}
+.actions .btn.skip{background:#e5e7eb}
+
+a.map{display:inline-flex;align-items:center;gap:.35rem;color:#1d4ed8;text-decoration:underline;font-weight:600}
+.footnote{color:var(--muted);margin:.6rem 0}
+.footer{text-align:center;color:var(--muted);padding:1.2rem 0}
+@media (max-width:760px){
+  .summary{grid-template-columns:1fr}
+}
